@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenObserve • Tokens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/sidebar.css" />
+  <link rel="stylesheet" href="../css/table.css" />
+  <link rel="stylesheet" href="../css/tokens.css" />
+</head>
+<body>
+  <div id="sidebar"></div>
+
+  <main class="content">
+    <header class="page-header">
+      <div>
+        <h1>API Tokens</h1>
+        <p class="page-subtitle">Gerencie chaves de acesso à sua API</p>
+      </div>
+    </header>
+
+    <section class="token-form card">
+      <div class="form-header">
+        <h2>Novo token</h2>
+        <p>Gere uma chave para autenticar suas aplicações.</p>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="tokenName">Nome do token</label>
+          <input type="text" id="tokenName" placeholder="Ex: Produção API" />
+        </div>
+
+        <div class="field">
+          <label for="application">Aplicação</label>
+          <input type="text" id="application" placeholder="Ex: web-app" />
+        </div>
+
+        <button class="btn-primary" onclick="criarToken()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+          </svg>
+          Gerar Token
+        </button>
+      </div>
+    </section>
+
+    <section class="logs card">
+      <div class="section-header">
+        <h2>Tokens ativos</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Aplicação</th>
+            <th>Criado em</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tokensTable"></tbody>
+      </table>
+    </section>
+
+    <div id="tokensPagination" class="pagination"></div>
+  </main>
+
+  <div id="tokenModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="fecharModalToken()">&times;</span>
+      <div class="modal-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+        </svg>
+      </div>
+      <h2>Token criado com sucesso</h2>
+      <p class="modal-desc">
+        Este token será mostrado <strong>apenas uma vez</strong>.
+        Copie e guarde em um local seguro.
+      </p>
+      <pre id="tokenValue"></pre>
+      <button class="btn-primary" onclick="copiarNovoToken()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        Copiar Token
+      </button>
+    </div>
+  </div>
+
+  <script src="../js/components.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/pagination.js"></script>
+  <script src="../js/tokens.js"></script>
+</body>
+</html>

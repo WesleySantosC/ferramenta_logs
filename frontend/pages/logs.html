@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenObserve • Logs</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/table.css">
+</head>
+<body>
+    <div id="sidebar"></div>
+    <main class="content">
+
+        <header>
+            <h1>Logs</h1>
+        </header>
+
+        <section class="filters">
+            <input id="search" type="text" placeholder="Buscar mensagem">
+
+            <select id="level">
+                <option value="">Todos os níveis</option>
+
+                <option value="INFO">INFO</option>
+
+                <option value="WARN">WARN</option>
+
+                <option value="ERROR">ERROR</option>
+            </select>
+
+            <input id="service" type="text" placeholder="Serviço">
+
+            <input id="application" type="text" placeholder="Aplicação">
+            
+            <button onclick="filtrarLogs()">Buscar</button>
+        </section>
+
+        <section class="logs">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Aplicação</th>
+                        <th>Serviço</th>
+                        <th>Nível</th>
+                        <th>Mensagem</th>
+                    </tr>
+                </thead>
+                <tbody id="logsTable"></tbody>
+            </table>
+        </section>
+
+        <div id="logModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal()"> × </span>
+                
+                <h2>Detalhes do Log</h2>
+
+                <pre id="logDetails"></pre>
+            </div>
+        </div>
+
+        <div id="logsPagination"></div>
+    </main>
+
+    <script src="../js/components.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/pagination.js"></script>
+    <script src="../js/logs.js"></script>
+</body>
+</html>

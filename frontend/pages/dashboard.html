@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenObserve • Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/table.css">
+</head>
+
+<body>
+    <div id="sidebar"></div>
+    <main class="content">
+        <header>
+            <h1>Dashboard</h1>
+        </header>
+
+        <section class="cards">
+            <div class="card">
+                <h3>Total Logs</h3>
+                <p id="totalLogs">0</p>
+            </div>
+
+            <div class="card">
+                <h3>INFO</h3>
+                <p id="infoLogs">0</p>
+            </div>
+
+            <div class="card">
+                <h3>WARNING</h3>
+                <p id="warningLogs">0</p>
+            </div>
+
+            <div class="card">
+                <h3>ERROR</h3>
+                <p id="errorLogs">0</p>
+            </div>
+        </section>
+
+        <section class="charts">
+            <div class="chart-card">
+                <h3>Logs por nível</h3>
+                <canvas id="levelChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Logs por serviço</h3>
+                <canvas id="serviceChart"></canvas>
+            </div>
+        </section>
+
+        <section class="recent-logs">
+            <h2>Últimos logs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Aplicação</th>
+                        <th>Serviço</th>
+                        <th>Nível</th>
+                        <th>Mensagem</th>
+                    </tr>
+                </thead>
+                <tbody id="logsTable"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>
