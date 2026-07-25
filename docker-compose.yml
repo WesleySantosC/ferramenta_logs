@@ -49,6 +49,18 @@ services:
       redis:
         condition: service_started
 
+  frontend:
+    image: nginx:alpine
+    container_name: oo_frontend
+
+    ports:
+      - "8081:80"   # troque se essa porta estiver ocupada
+
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+
+    depends_on:
+      - api
 
 volumes:
   postgres_data:
