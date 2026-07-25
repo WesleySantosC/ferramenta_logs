@@ -1,5 +1,5 @@
 window.CONFIG = {
-    API_URL: "http://localhost:8000"
+    API_URL: "https://muvysystem.com.br/"
 };
 
 window.API = CONFIG.API_URL;
