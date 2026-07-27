@@ -16,22 +16,22 @@ logger = OpenObserve(
 )
 
 
-logger.info(
-    "SDK funcionando!"
-)
-
-
-logger.warning(
-    "CPU acima de 80%",
-    {
-        "cpu": 84
-    }
-)
-
-
-logger.error(
-    "Erro ao salvar pedido",
-    {
-        "pedido": 154
-    }
-)
+#logger.info(
+#    "SDK funcionando!"
+#)
+#
+#
+#logger.warning(
+#    "CPU acima de 80%",
+#    {
+#        "cpu": 84
+#    }
+#)
+#
+#
+#logger.error(
+#    "Erro ao salvar pedido",
+#    {
+#        "pedido": 154
+#    }
+#)
