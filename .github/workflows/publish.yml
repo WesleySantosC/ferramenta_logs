@@ -28,7 +28,7 @@ jobs:
           python-version: "3.x"
 
 
-      - name: Install build
+      - name: Install build tools
         run: |
           python -m pip install --upgrade pip
           pip install build
@@ -40,7 +40,14 @@ jobs:
           python -m build
 
 
+      - name: Verify package files
+        run: |
+          ls -la
+          ls -la sdk/python
+          ls -la sdk/python/dist
+
+
       - name: Publish PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: sdk/python/dist/
+          packages-dir: sdk/python/dist
