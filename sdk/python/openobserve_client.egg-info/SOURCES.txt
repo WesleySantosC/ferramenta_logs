@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+examples/basic.py
+openobserve/__init__.py
+openobserve/client.py
+openobserve_client.egg-info/PKG-INFO
+openobserve_client.egg-info/SOURCES.txt
+openobserve_client.egg-info/dependency_links.txt
+openobserve_client.egg-info/requires.txt
+openobserve_client.egg-info/top_level.txt
