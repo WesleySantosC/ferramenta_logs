@@ -25,7 +25,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.12"
 
 
       - name: Install build tools
@@ -42,9 +42,21 @@ jobs:
 
       - name: Verify package files
         run: |
+          echo "Root:"
           ls -la
+
+          echo "SDK:"
           ls -la sdk/python
+
+          echo "Distribution:"
           ls -la sdk/python/dist
+
+
+      - name: Test SDK installation
+        working-directory: sdk/python
+        run: |
+          pip install dist/*.whl
+          python -c "from openobserve import OpenObserve; print('SDK import OK')"
 
 
       - name: Publish PyPI
