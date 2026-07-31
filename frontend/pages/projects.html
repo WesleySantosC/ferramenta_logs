@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Projects | OpenObserve
+</title>
+
+
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/sidebar.css">
+<link rel="stylesheet" href="../css/table.css">
+<link rel="stylesheet" href="../css/forms.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/projects.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+<div id="sidebar"></div>
+
+
+
+<div class="content">
+
+
+<div id="header"></div>
+
+
+
+<main id="page-content">
+
+
+<div class="projects-page">
+
+
+
+<div class="page-header">
+
+
+<div>
+
+<h1>
+Projetos
+</h1>
+
+
+<p>
+Gerencie os projetos da organização
+</p>
+
+
+</div>
+
+
+
+<button
+class="btn btn-primary"
+id="btnNewProject">
+
+<i data-lucide="plus"></i>
+
+Novo Projeto
+
+</button>
+
+
+</div>
+
+
+
+
+
+<section class="panel project-panel">
+
+
+
+<div class="table-container">
+
+
+<table class="project-table">
+
+
+<thead>
+
+<tr>
+
+<th>
+Nome
+</th>
+
+
+<th>
+Descrição
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Ações
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="projectsTable">
+
+
+<tr>
+
+<td colspan="4">
+
+Carregando...
+
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+</div>
+
+
+</main>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- MODAL -->
+
+<div 
+id="projectModal"
+class="modal hidden">
+
+
+<div class="modal-content">
+
+
+
+<div class="modal-header">
+
+
+<h2 id="modalTitle">
+
+Novo Projeto
+
+</h2>
+
+
+<button
+type="button"
+class="modal-close"
+id="closeModal">
+
+×
+
+
+</button>
+
+
+</div>
+
+
+
+
+
+<form id="projectForm">
+
+
+<input
+type="hidden"
+id="projectId">
+
+
+
+<label>
+
+Nome
+
+</label>
+
+
+<input
+id="projectName"
+placeholder="Nome do projeto"
+required>
+
+
+
+
+<label>
+
+Descrição
+
+</label>
+
+
+<textarea
+id="projectDescription"
+placeholder="Descrição do projeto">
+
+</textarea>
+
+
+
+
+<label class="checkbox">
+
+
+<input
+type="checkbox"
+id="projectActive"
+checked>
+
+
+<span>
+
+Projeto ativo
+
+</span>
+
+
+</label>
+
+
+
+
+
+
+<div class="modal-actions">
+
+
+<button
+type="button"
+class="btn btn-outline"
+id="closeModalBottom">
+
+Cancelar
+
+</button>
+
+
+
+<button
+class="btn btn-primary">
+
+
+Salvar
+
+</button>
+
+
+
+</div>
+
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<script src="https://unpkg.com/lucide@0.468.0"></script>
+
+<script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/projects.js"></script>
+
+
+<script>
+
+lucide.createIcons();
+
+</script>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Organizações | OpenObserve
+</title>
+
+
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/sidebar.css">
+<link rel="stylesheet" href="../css/table.css">
+<link rel="stylesheet" href="../css/forms.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/organizations.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+<div id="sidebar"></div>
+
+
+
+<div class="content">
+
+
+<div id="header"></div>
+
+
+
+<main id="page-content">
+
+
+<section class="panel">
+
+
+<div class="panel-header flex-between">
+
+
+<h2>
+Organizações
+</h2>
+
+
+<button
+class="btn btn-primary"
+onclick="openOrganizationModal()">
+
+Nova Organização
+
+</button>
+
+
+</div>
+
+
+
+<table class="data-table">
+
+
+<thead>
+
+
+<tr>
+
+<th>
+Nome
+</th>
+
+
+<th>
+Slug
+</th>
+
+
+<th>
+Criado em
+</th>
+
+
+<th>
+Ações
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="organizationsTable">
+
+
+<tr>
+
+<td colspan="4">
+
+Carregando...
+
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+</section>
+
+
+</main>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div id="organizationModal"
+class="modal hidden">
+
+
+<div class="modal-content">
+
+
+<h3>
+Criar Organização
+</h3>
+
+
+
+<label>
+Nome
+</label>
+
+
+<input
+id="organizationName"
+placeholder="Minha Empresa">
+
+
+
+<label>
+Slug
+</label>
+
+
+<input
+id="organizationSlug"
+placeholder="minha-empresa">
+
+
+
+<div class="modal-actions">
+
+
+<button
+class="btn-secondary"
+onclick="closeOrganizationModal()">
+
+Cancelar
+
+</button>
+
+
+
+<button
+class="btn btn-primary"
+onclick="createOrganization()">
+
+Criar
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<script src="https://unpkg.com/lucide@0.468.0"></script>
+
+<script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/sidebar.js"></script>
+<script src="../js/organizations.js"></script>
+
+
+</body>
+
+</html>

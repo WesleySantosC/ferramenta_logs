@@ -1,109 +1,442 @@
-let tokenAtual     ="";
-let paginaTokens   = 1;
-const limiteTokens = 19;
+document.addEventListener(
+    "DOMContentLoaded",
+    async()=>{
 
-const paginationTokens = new Pagination({
-    container:"#tokensPagination",
 
-    page:1,
+        if(!isAuthenticated()){
 
-    limit:limiteTokens,
+            window.location =
+            "login.html";
 
-    total:0,
+            return;
 
-    onChange:(page)=>{
-        paginaTokens = page;
-        carregarTokens();
-    }
-});
-
-async function criarToken(){
-
-    const name        = document.getElementById("tokenName").value.trim();
-    const application = document.getElementById("application").value.trim();
-
-    if(!name || !application){
-        alert("Preencha nome e aplicação.");
-        return;
-    }
-
-    const response = await fetch(
-        API + `/tokens?name=${encodeURIComponent(name)}&application=${encodeURIComponent(application)}`,
-        {
-            method:"POST"
         }
-    );
 
-    const data = await response.json();
-    tokenAtual = data.token;
 
-    document.getElementById("tokenValue").textContent   = data.token;
-    document.getElementById("tokenModal").classList.add("open");
-    
-    carregarTokens();
-}
+        await loadTokens();
 
-async function carregarTokens(){
-    const response = await fetch(
-        API + `/tokens?page=${paginaTokens}&limit=${limiteTokens}`
-    );
 
-    const dados  = await response.json();
-    const tabela = document.getElementById("tokensTable");
+    }
+);
 
-    tabela.innerHTML="";
 
-    dados.data.forEach(token=>{
-        tabela.innerHTML += `
-        <tr>
-            <td>${token.id}</td>
-            <td>${token.name}</td>
-            <td>${token.application}</td>
-            <td>${token.created_at}</td>
-            <td>
-                <button onclick="deletarToken(${token.id})">Excluir</button>
-            </td>
-        </tr>
-        `;
-    });
 
-    paginationTokens.update(
-        dados.total,
-        dados.page
-    );
+async function loadTokens(){
 
-}
 
-async function deletarToken(id){
+    try{
 
-    if(!confirm("Deseja remover este token?"))
-        return;
 
-    const response =
-        await fetch(
-            API + `/tokens/${id}`,
-            {
-                method:"DELETE"
-            }
+        const response =
+        await apiRequest(
+            "/tokens"
         );
 
-    if(response.ok){
-        carregarTokens();
+
+        renderTokens(
+            response.data
+        );
+
+
     }
-}
+    catch(error){
 
-async function copiarNovoToken() {
-    if (!navigator.clipboard) {
-        alert("Seu navegador não suporta a API de área de transferência nesta página.");
-        return;
+        console.error(
+            "Erro carregando tokens:",
+            error
+        );
+
     }
 
-    await navigator.clipboard.writeText(tokenAtual);
-    alert("Token copiado!");
 }
 
-function fecharModalToken() {
-    document.getElementById("tokenModal").classList.remove("open");
+
+
+
+
+function renderTokens(tokens){
+
+
+const table =
+document.getElementById(
+"tokensTable"
+);
+
+
+
+table.innerHTML="";
+
+
+
+if(tokens.length === 0){
+
+
+table.innerHTML = `
+
+<tr>
+
+<td colspan="6">
+
+Nenhum token encontrado
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+
 }
 
-carregarTokens();
+
+
+tokens.forEach(token=>{
+
+
+table.innerHTML += `
+
+
+<tr>
+
+
+<td>
+${token.name}
+</td>
+
+
+<td>
+${token.application}
+</td>
+
+
+<td>
+${token.project_id}
+</td>
+
+
+
+<td>
+
+<span class="status ${token.active ? "active":"inactive"}">
+
+${token.active ? "Ativo":"Inativo"}
+
+</span>
+
+
+</td>
+
+
+
+<td>
+
+${formatDate(token.created_at)}
+
+</td>
+
+
+
+<td>
+
+
+<button
+
+class="action-btn delete-btn"
+
+onclick="deleteToken(${token.id})">
+
+Excluir
+
+</button>
+
+
+</td>
+
+
+
+</tr>
+
+
+`;
+
+
+});
+
+
+}
+
+
+
+
+
+
+async function createToken(){
+
+
+const name =
+document
+.getElementById(
+"tokenName"
+)
+.value.trim();
+
+
+
+const project_id =
+Number(
+document
+.getElementById(
+"projectId"
+)
+.value
+);
+
+
+
+if(!name || !project_id){
+
+alert(
+"Informe nome e projeto"
+);
+
+return;
+
+}
+
+
+
+
+try{
+
+
+const response =
+await apiRequest(
+"/tokens",
+{
+
+method:"POST",
+
+body:JSON.stringify({
+
+name,
+project_id
+
+})
+
+}
+
+);
+
+
+
+document
+.getElementById(
+"tokenValue"
+)
+.innerText =
+response.token;
+
+
+
+document
+.getElementById(
+"generatedToken"
+)
+.classList
+.remove("hidden");
+
+
+
+document
+.getElementById(
+"createTokenButton"
+)
+.classList
+.add("hidden");
+
+
+
+await loadTokens();
+
+
+
+}
+
+
+catch(error){
+
+alert(
+error.message
+);
+
+}
+
+
+}
+
+
+
+
+
+
+
+async function deleteToken(id){
+
+
+if(!confirm(
+"Deseja remover este token?"
+))
+return;
+
+
+
+try{
+
+
+await apiRequest(
+
+`/tokens/${id}`,
+
+{
+
+method:"DELETE"
+
+}
+
+);
+
+
+
+await loadTokens();
+
+
+}
+
+
+catch(error){
+
+alert(
+error.message
+);
+
+}
+
+
+}
+
+
+
+
+
+
+
+function openTokenModal(){
+
+
+document
+.getElementById(
+"tokenName"
+)
+.value="";
+
+
+
+document
+.getElementById(
+"projectId"
+)
+.value="";
+
+
+
+document
+.getElementById(
+"generatedToken"
+)
+.classList
+.add("hidden");
+
+
+
+document
+.getElementById(
+"createTokenButton"
+)
+.classList
+.remove("hidden");
+
+
+
+document
+.getElementById(
+"tokenModal"
+)
+.classList
+.remove("hidden");
+
+
+}
+
+
+
+
+
+function closeTokenModal(){
+
+
+document
+.getElementById(
+"tokenModal"
+)
+.classList
+.add("hidden");
+
+
+}
+
+
+
+
+
+function copyToken(){
+
+
+const token =
+document
+.getElementById(
+"tokenValue"
+)
+.innerText;
+
+
+
+navigator
+.clipboard
+.writeText(token);
+
+
+
+alert(
+"Token copiado"
+);
+
+
+}
+
+
+
+
+
+
+function formatDate(date){
+
+
+return new Date(date)
+.toLocaleString(
+"pt-BR"
+);
+
+
+}

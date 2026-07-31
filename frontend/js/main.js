@@ -1,10 +1,20 @@
-const button = document.getElementById("connect");
+document.addEventListener(
+    "DOMContentLoaded",
 
-button.addEventListener("click", async () => {
-    const token = document.getElementById("token").value;
-    
-    saveToken(token);
+    () => {
+        const path =
+            window.location.pathname;
 
-    window.location = "pages/dashboard.html";
+        const loginPage =
+            path.includes("login.html");
 
-});
+        if(!isAuthenticated() && !loginPage){
+            Router.login();
+            return;
+        }
+
+        if(isAuthenticated() && loginPage){
+            Router.dashboard();
+        }
+    }
+);

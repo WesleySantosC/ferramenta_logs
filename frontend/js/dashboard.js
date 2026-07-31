@@ -1,79 +1,330 @@
-let levelChart;
-let serviceChart;
+document.addEventListener(
+    "DOMContentLoaded",
+    async()=>{
 
-async function carregarDashboard(){
-    const stats = await getStats();
 
-    document.getElementById("totalLogs").innerText   = stats.total;
-    document.getElementById("infoLogs").innerText    = stats.levels.INFO || 0;
-    document.getElementById("warningLogs").innerText = stats.levels.WARN || 0;
-    document.getElementById("errorLogs").innerText   = stats.levels.ERROR || 0;
+        if(!isAuthenticated()){
 
-    renderCharts(stats);
-    carregarUltimosLogs();
-}
+            window.location =
+                "login.html";
 
-async function carregarUltimosLogs(){
-    const dados  = await getLogs("?limit=8");
-    const tabela = document.getElementById("logsTable");
+            return;
 
-    tabela.innerHTML = "";
-
-    dados.data.forEach(log => {
-        tabela.innerHTML += `
-        <tr>
-            <td>${log.created_at}</td>
-            <td>${log.application}</td>
-            <td>${log.service}</td>
-            <td>
-                <span class="level ${log.level.toLowerCase()}">
-                    ${log.level}
-                </span>
-            </td>
-            <td>${log.message}</td>
-        </tr>
-        `;
-    });
-}
-
-function renderCharts(stats){
-    const levelCtx =
-        document.getElementById("levelChart");
-
-    if(levelChart)
-        levelChart.destroy();
-
-    levelChart = new Chart(levelCtx, {
-        type:"doughnut",
-
-        data:{
-            labels:Object.keys(stats.levels),
-
-            datasets:[{
-                data:Object.values(stats.levels)
-            }]
         }
-    });
 
-    const serviceCtx = document.getElementById("serviceChart");
 
-    if(serviceChart)
-        serviceChart.destroy();
+        await loadDashboard();
 
-    serviceChart = new Chart(serviceCtx,{
-        type:"bar",
-        data:{
-            labels:Object.keys(stats.services),
-            datasets:[{
-                label:"Quantidade",
-                data:Object.values(stats.services)
-            }]
-        }
-    });
+
+    }
+
+);
+
+
+
+
+async function loadDashboard(){
+
+
+    try{
+
+
+        const stats =
+            await getStats();
+
+
+
+        document.getElementById(
+            "totalLogs"
+        ).innerText =
+            stats.total;
+
+
+
+        document.getElementById(
+            "errorLogs"
+        ).innerText =
+            stats.levels.ERROR || 0;
+
+
+
+        document.getElementById(
+            "warningLogs"
+        ).innerText =
+            stats.levels.WARN || 0;
+
+
+
+        document.getElementById(
+            "applications"
+        ).innerText =
+            Object.keys(
+                stats.applications
+            ).length;
+
+
+
+
+        renderTimeline(
+            stats
+        );
+
+
+
+        renderLevelChart(
+            stats
+        );
+
+
+
+        renderApplicationsChart(
+            stats
+        );
+
+
+
+    }
+    catch(error){
+
+
+        console.error(
+            "Erro carregando dashboard:",
+            error
+        );
+
+
+    }
+
+
 }
 
-carregarDashboard();
 
-setInterval(()=>{
-    carregarDashboard();
-},5000);
+
+
+
+
+function renderTimeline(stats){
+
+
+    const container =
+        document.getElementById(
+            "timeline"
+        );
+
+
+
+    container.innerHTML = "";
+
+
+
+    Object.entries(
+        stats.services
+    )
+    .forEach(
+        ([service,total])=>{
+
+
+            container.innerHTML += `
+
+                <div class="timeline-item">
+
+
+                    <strong>
+                        ${service}
+                    </strong>
+
+
+                    <span>
+                        ${total} logs
+                    </span>
+
+
+                </div>
+
+            `;
+
+
+        }
+
+    );
+
+
+}
+
+
+
+
+
+
+
+function renderLevelChart(stats){
+
+
+    const ctx =
+        document.getElementById(
+            "logsLevelChart"
+        );
+
+
+
+    new Chart(
+        ctx,
+        {
+
+            type:"doughnut",
+
+
+            data:{
+
+
+                labels:[
+
+                    "INFO",
+                    "WARN",
+                    "ERROR"
+
+                ],
+
+
+                datasets:[{
+
+                    data:[
+
+                        stats.levels.INFO || 0,
+
+                        stats.levels.WARN || 0,
+
+                        stats.levels.ERROR || 0
+
+                    ]
+
+                }]
+
+
+            },
+
+
+            options:{
+
+
+                responsive:true,
+
+
+                plugins:{
+
+
+                    legend:{
+
+
+                        position:"bottom"
+
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        }
+
+    );
+
+
+}
+
+
+
+
+
+
+
+
+function renderApplicationsChart(stats){
+
+
+    const ctx =
+        document.getElementById(
+            "applicationsChart"
+        );
+
+
+
+    const applications =
+        stats.applications;
+
+
+
+    new Chart(
+
+        ctx,
+
+        {
+
+
+            type:"bar",
+
+
+            data:{
+
+
+                labels:
+
+                    Object.keys(
+                        applications
+                    ),
+
+
+
+                datasets:[{
+
+
+                    label:
+                    "Logs",
+
+
+                    data:
+
+                        Object.values(
+                            applications
+                        )
+
+
+                }]
+
+
+            },
+
+
+            options:{
+
+
+                responsive:true,
+
+
+                scales:{
+
+
+                    y:{
+
+
+                        beginAtZero:true
+
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        }
+
+    );
+
+
+}

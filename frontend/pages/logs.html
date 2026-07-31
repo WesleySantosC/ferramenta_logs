@@ -1,72 +1,294 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenObserve • Logs</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/table.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Logs | OpenObserve
+</title>
+
+
+<link rel="stylesheet"
+href="../css/variables.css">
+
+<link rel="stylesheet"
+href="../css/reset.css">
+
+<link rel="stylesheet"
+href="../css/style.css">
+
+<link rel="stylesheet"
+href="../css/sidebar.css">
+
+<link rel="stylesheet"
+href="../css/table.css">
+
+<link rel="stylesheet"
+href="../css/components.css">
+
+<link rel="stylesheet"
+href="../css/logs.css">
+
+
 </head>
+
+
 <body>
-    <div id="sidebar"></div>
-    <main class="content">
 
-        <header>
-            <h1>Logs</h1>
-        </header>
 
-        <section class="filters">
-            <input id="search" type="text" placeholder="Buscar mensagem">
+<div class="layout">
 
-            <select id="level">
-                <option value="">Todos os níveis</option>
 
-                <option value="INFO">INFO</option>
+<div id="sidebar"></div>
 
-                <option value="WARN">WARN</option>
 
-                <option value="ERROR">ERROR</option>
-            </select>
 
-            <input id="service" type="text" placeholder="Serviço">
+<div class="content">
 
-            <input id="application" type="text" placeholder="Aplicação">
-            
-            <button onclick="filtrarLogs()">Buscar</button>
-        </section>
 
-        <section class="logs">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Aplicação</th>
-                        <th>Serviço</th>
-                        <th>Nível</th>
-                        <th>Mensagem</th>
-                    </tr>
-                </thead>
-                <tbody id="logsTable"></tbody>
-            </table>
-        </section>
+<div id="header"></div>
 
-        <div id="logModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="fecharModal()"> × </span>
-                
-                <h2>Detalhes do Log</h2>
 
-                <pre id="logDetails"></pre>
-            </div>
-        </div>
 
-        <div id="logsPagination"></div>
-    </main>
+<main id="page-content">
 
-    <script src="../js/components.js"></script>
-    <script src="../js/config.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/pagination.js"></script>
-    <script src="../js/logs.js"></script>
+
+<section class="panel">
+
+
+<div class="panel-header">
+
+<h2>
+Logs
+</h2>
+
+</div>
+
+
+
+<div class="filters">
+
+
+<input 
+id="search"
+placeholder="Buscar log">
+
+
+
+<select id="level">
+
+<option value="">
+Todos níveis
+</option>
+
+<option value="INFO">
+INFO
+</option>
+
+<option value="WARN">
+WARN
+</option>
+
+<option value="ERROR">
+ERROR
+</option>
+
+</select>
+
+
+
+
+<input
+id="application"
+placeholder="Aplicação">
+
+
+
+<button 
+id="filterButton"
+class="btn btn-primary">
+Filtrar
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="table-container">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+Level
+</th>
+
+
+<th>
+Application
+</th>
+
+
+<th>
+Service
+</th>
+
+
+<th>
+Mensagem
+</th>
+
+
+<th>
+Ambiente
+</th>
+
+
+<th>
+Data
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="logsTable">
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+<div class="pagination">
+
+
+<button id="prevPage">
+
+Anterior
+
+</button>
+
+
+
+<span id="pageInfo">
+
+Página 1
+
+</span>
+
+
+
+<button id="nextPage">
+
+Próxima
+
+</button>
+
+
+</div>
+
+
+
+</section>
+
+
+</main>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- MODAL LOG -->
+
+
+<div 
+id="logModal"
+class="log-modal">
+
+
+<div class="log-modal-content">
+
+
+<button
+id="closeLogModal"
+class="close-modal">
+
+×
+
+</button>
+
+
+
+<h2>
+Detalhes do Log
+</h2>
+
+
+
+<div id="logDetails">
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<script src="https://unpkg.com/lucide@0.468.0"></script>
+
+
+<script src="../js/config.js"></script>
+
+<script src="../js/auth.js"></script>
+
+<script src="../js/api.js"></script>
+
+<script src="../js/ui.js"></script>
+
+<script src="../js/sidebar.js"></script>
+
+<script src="../js/logs.js"></script>
+
+
 </body>
+
+
 </html>

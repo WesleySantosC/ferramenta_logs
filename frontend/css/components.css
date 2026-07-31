@@ -1,0 +1,198 @@
+/* ===========================
+   BOTÕES
+=========================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 10px;
+  transition: 0.25s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-600);
+  color: black;
+}
+
+.btn-outline {
+  background: #fff;
+  border: 1px solid var(--border);
+}
+
+.btn-outline:hover {
+  background: #f4f4f8;
+}
+
+/* ===========================
+   BADGES
+=========================== */
+.badge {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:9999;
+
+}
+
+
+.modal-overlay.active{
+
+    display:flex;
+
+}
+
+
+
+.modal-content{
+
+    width:500px;
+
+    max-width:90%;
+
+    background:var(--surface);
+
+    border-radius:16px;
+
+    padding:24px;
+
+    box-shadow:var(--shadow-md);
+
+}
+
+
+
+.modal-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.modal-header h2{
+
+    font-size:22px;
+
+}
+
+
+
+.modal-close{
+
+    font-size:26px;
+
+    background:none;
+
+    cursor:pointer;
+
+}
+
+
+
+.modal-content form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+
+
+.modal-content input,
+
+.modal-content textarea,
+
+.modal-content select{
+
+    width:100%;
+
+    height:42px;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    padding:0 12px;
+
+}
+
+
+
+.checkbox{
+
+    display:flex;
+
+    flex-direction:row !important;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+
+.checkbox input{
+
+    width:auto;
+
+}
+
+
+
+.modal-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    margin-top:25px;
+
+}

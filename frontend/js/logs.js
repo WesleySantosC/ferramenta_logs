@@ -1,105 +1,485 @@
-let filtroAtual  = "";
-let paginaAtual  = 1;
-const limiteLogs = 15;
+let currentPage = 1;
 
-const paginationLogs = new Pagination({
-    container:"#logsPagination",
-    
-    page:1,
 
-    limit:limiteLogs,
-    total:0,
+let filters = {
 
-    onChange:(page)=>{
-        paginaAtual = page;
-        carregarLogs();
-    }
+    level:"",
+    application:"",
+    search:""
+
+};
+
+
+
+
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+
+    document
+    .getElementById("filterButton")
+    ?.addEventListener(
+    "click",
+    ()=>{
+
+
+        filters.level =
+        document.getElementById(
+            "level"
+        ).value;
+
+
+
+        filters.application =
+        document.getElementById(
+            "application"
+        ).value;
+
+
+
+        filters.search =
+        document.getElementById(
+            "search"
+        ).value;
+
+
+
+        currentPage = 1;
+
+
+        loadLogs();
+
+
+    });
+
+
+
+
+
+    document
+    .getElementById("nextPage")
+    ?.addEventListener(
+    "click",
+    ()=>{
+
+        currentPage++;
+
+        loadLogs();
+
+    });
+
+
+
+
+
+    document
+    .getElementById("prevPage")
+    ?.addEventListener(
+    "click",
+    ()=>{
+
+
+        if(currentPage > 1){
+
+            currentPage--;
+
+            loadLogs();
+
+        }
+
+
+    });
+
+
+
+
+
+    document
+    .getElementById("closeLogModal")
+    ?.addEventListener(
+    "click",
+    ()=>{
+
+
+        document
+        .getElementById("logModal")
+        .classList.remove(
+            "active"
+        );
+
+
+    });
+
+
+
+
+
+    loadLogs();
+
+
 });
 
-async function carregarLogs(){
-    let params = filtroAtual;
 
-    if(params){
-        params += "&";
-    }else{
-        params = "?";
+
+
+
+
+
+async function loadLogs(){
+
+
+    try{
+
+
+        let params =
+        new URLSearchParams();
+
+
+
+        params.append(
+            "page",
+            currentPage
+        );
+
+
+        params.append(
+            "limit",
+            50
+        );
+
+
+
+        if(filters.level){
+
+            params.append(
+                "level",
+                filters.level
+            );
+
+        }
+
+
+
+        if(filters.application){
+
+            params.append(
+                "application",
+                filters.application
+            );
+
+        }
+
+
+
+        if(filters.search){
+
+            params.append(
+                "search",
+                filters.search
+            );
+
+        }
+
+
+
+
+        const response =
+        await getLogs(
+            `?${params.toString()}`
+        );
+
+
+
+        renderLogs(
+            response.data
+        );
+
+
+        updatePagination(
+            response
+        );
+
+
+
+    }catch(error){
+
+
+        console.error(
+            "Erro carregando logs:",
+            error
+        );
+
+
     }
 
-    params += `page=${paginaAtual}&limit=${limiteLogs}`;
 
-    const dados = await getLogs(params);
+}
 
-    preencherTabela(dados);
 
-    paginationLogs.update(
-        dados.total,
-        dados.page
+
+
+
+
+
+
+function renderLogs(logs){
+
+
+    const tbody =
+    document.getElementById(
+        "logsTable"
     );
-}
-
-async function filtrarLogs(){
-    let params        = "?";
-    const search      = document.getElementById("search").value;
-    const level       = document.getElementById("level").value;
-    const service     = document.getElementById("service").value;
-    const application = document.getElementById("application").value;
-
-    if(search)
-        params += `search=${search}&`;
 
 
-    if(level)
-        params += `level=${level}&`;
+    if(!tbody)
+        return;
 
 
-    if(service)
-        params += `service=${service}&`;
+
+    tbody.innerHTML="";
 
 
-    if(application)
-        params += `application=${application}&`;
 
-    filtroAtual = params;
-    paginaAtual = 1;
 
-    carregarLogs();
-}
+    logs.forEach(
+    log=>{
 
-function preencherTabela(dados){
-    const tabela = document.getElementById("logsTable");
 
-    tabela.innerHTML="";
+        tbody.innerHTML += `
 
-    dados.data.forEach(log=>{
-        tabela.innerHTML += `
-        <tr onclick='abrirDetalhe(${JSON.stringify(log)})'>
-            <td>${log.created_at}</td>
-            <td>${log.application}</td>
-            <td>${log.service}</td>
+
+        <tr
+        class="log-row"
+        onclick='openLogDetails(${JSON.stringify(log)})'>
+
+
             <td>
-                <span class="level ${log.level.toLowerCase()}">
-                    ${log.level}
+
+                <span class="
+                level
+                level-${log.level.toLowerCase()}
+                ">
+
+                ${log.level}
+
                 </span>
+
             </td>
-            <td>${log.message}</td>
+
+
+
+            <td>
+                ${log.application}
+            </td>
+
+
+
+            <td>
+                ${log.service}
+            </td>
+
+
+
+            <td>
+                ${log.message}
+            </td>
+
+
+
+            <td>
+                ${log.environment}
+            </td>
+
+
+
+            <td>
+                ${formatDate(log.created_at)}
+            </td>
+
+
+
         </tr>
+
+
         `;
+
+
     });
+
+
 }
 
-function abrirDetalhe(log){
-    document.getElementById("logDetails").textContent = JSON.stringify(log,null,4);
-    document.getElementById("logModal").style.display = "block";
+
+
+
+
+
+
+function openLogDetails(log){
+
+
+    const modal =
+    document.getElementById(
+        "logModal"
+    );
+
+
+    const details =
+    document.getElementById(
+        "logDetails"
+    );
+
+
+
+    details.innerHTML = `
+
+
+
+    <div class="log-detail-item">
+
+        <div class="log-detail-label">
+        Level
+        </div>
+
+        <div class="log-detail-value">
+        ${log.level}
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="log-detail-item">
+
+        <div class="log-detail-label">
+        Application
+        </div>
+
+        <div class="log-detail-value">
+        ${log.application}
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="log-detail-item">
+
+        <div class="log-detail-label">
+        Service
+        </div>
+
+        <div class="log-detail-value">
+        ${log.service}
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="log-detail-item">
+
+        <div class="log-detail-label">
+        Request ID
+        </div>
+
+        <div class="log-detail-value">
+        ${log.request_id ?? "-"}
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="log-detail-item">
+
+        <div class="log-detail-label">
+        Mensagem
+        </div>
+
+        <div class="log-detail-value">
+        ${log.message}
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="log-detail-item">
+
+        <div class="log-detail-label">
+        Context
+        </div>
+
+
+        <pre class="log-context">
+
+${JSON.stringify(
+    log.context,
+    null,
+    2
+)}
+
+        </pre>
+
+
+    </div>
+
+
+
+    `;
+
+
+
+    modal.classList.add(
+        "active"
+    );
+
+
 }
 
-function fecharModal(){
-    document.getElementById("logModal").style.display="none";
+
+
+
+
+
+
+
+function updatePagination(data){
+
+
+    document
+    .getElementById("pageInfo")
+    .innerText =
+
+    `${data.page} de ${Math.ceil(data.total/data.limit)}`;
+
+
 }
 
-carregarLogs();
 
-setInterval(()=>{
 
-    carregarLogs();
 
-},5000);
+
+
+
+function formatDate(date){
+
+    return new Date(date)
+    .toLocaleString(
+        "pt-BR"
+    );
+
+}

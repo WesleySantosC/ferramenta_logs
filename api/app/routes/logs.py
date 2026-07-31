@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Query, Depends, HTTPException
-from app.schemas.log import LogSchema, LogResponse, LogListResponse
+from app.schemas.log import (LogSchema, LogListResponse, LogsBulkSchema)
 from app.services.log_service import LogService
-from app.schemas.log import LogsBulkSchema
-from app.dependencies.auth import verify_token
+from app.dependencies.auth import get_current_user, verify_token
 
 router = APIRouter()
 
@@ -12,18 +11,28 @@ async def create_log(
     token = Depends(verify_token)
 ):
 
-    if log.application != token.application:
-        raise HTTPException(
-            status_code=403,
-            detail="Token não pertence a esta aplicação"
-        )
-
-    response = await LogService.create(log)
+    response = await LogService.create(
+        log,
+        token
+    )
 
     return response
 
+@router.post("/logs/bulk")
+async def create_bulk_logs(
+    payload: LogsBulkSchema,
+    token = Depends(verify_token)
+):
 
-@router.get("/logs", response_model=LogListResponse)
+    return await LogService.create_bulk(
+        payload.logs,
+        token
+    )
+
+@router.get(
+    "/logs",
+    response_model=LogListResponse
+)
 async def get_logs(
     level: str | None = None,
     service: str | None = None,
@@ -33,10 +42,12 @@ async def get_logs(
     start_date: str | None = None,
     end_date: str | None = None,
     page: int = 1,
-    limit: int = 50
+    limit: int = 50,
+    user = Depends(get_current_user)
 ):
 
     return await LogService.list(
+        user=user,
         level=level,
         service=service,
         application=application,
@@ -49,36 +60,25 @@ async def get_logs(
     )
 
 @router.get("/logs/stats")
-async def log_stats():
+async def log_stats(
+    user = Depends(get_current_user)
+):
 
-    return await LogService.stats()
+    return await LogService.stats(
+        user=user
+    )
 
 @router.get("/logs/timeline")
 async def log_timeline(
     minutes: int = Query(
         1440,
         ge=1,
-        le=43200,
-        description="Quantidade de minutos para análise"
-    )
+        le=43200
+    ),
+    user = Depends(get_current_user)
 ):
 
     return await LogService.timeline(
+        user=user,
         minutes=minutes
     )
-
-@router.post("/logs/bulk")
-async def create_bulk_logs(
-    payload: LogsBulkSchema,
-    token=Depends(verify_token)
-):
-
-    for log in payload.logs:
-
-        if log.application != token.application:
-            raise HTTPException(
-                status_code=403,
-                detail=f"Token não pertence à aplicação '{log.application}'"
-            )
-
-    return await LogService.create_bulk(payload.logs)
