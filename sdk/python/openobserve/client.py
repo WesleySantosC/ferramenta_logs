@@ -11,6 +11,12 @@ class OpenObserve:
         service,
         environment="production"
     ):
+        
+        if not token:
+            raise ValueError(
+                "OpenObserve token is required"
+            )
+
         self.api_url = api_url
         self.token = token
         self.application = application
